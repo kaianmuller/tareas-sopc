@@ -81,11 +81,11 @@ int contador = 0;
      
      
       Serial.println(contador);
-      vTaskDelay(1000/portTICK_PERIOD_MS);  
+
 
       xSemaphoreGive( xSerialSemaphore ); 
     }
-
+vTaskDelay(1000/portTICK_PERIOD_MS); 
     
   }
 }
@@ -96,18 +96,18 @@ void Tarea2( void *pvParameters __attribute__((unused)) )
   for (;;)
   {
 
-    int sensorValue = analogRead(A0);
+    int pinValue = analogRead(A0);
 
 
     if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
     {
 
-      Serial.println(sensorValue);
-
+      Serial.println(pinValue);
+  
       xSemaphoreGive( xSerialSemaphore ); 
     }
 
-    vTaskDelay(1);  
+ vTaskDelay(1000/portTICK_PERIOD_MS); 
   }
 }
 
