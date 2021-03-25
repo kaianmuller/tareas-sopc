@@ -4,6 +4,12 @@
 
 SemaphoreHandle_t xSerialSemaphore;
 
+TaskHandle_t Tarea1_Handler;
+TaskHandle_t Tarea2_Handler;
+TaskHandle_t Tarea3_Handler;
+
+int contador = 0;
+
 
 void Tarea1( void *pvParameters );
 void Tarea2( void *pvParameters );
@@ -33,7 +39,7 @@ void setup() {
     ,  128  
     ,  NULL
     ,  3  
-    ,  NULL );
+    ,  &Tarea1_Handler);
 
   xTaskCreate(
     Tarea2
@@ -41,7 +47,7 @@ void setup() {
     ,  128  
     ,  NULL
     ,  2  
-    ,  NULL );
+    ,  &Tarea2_Handler);
 
   xTaskCreate(
     Tarea3
@@ -49,7 +55,7 @@ void setup() {
     ,  128  
     ,  NULL
     ,  1 
-    ,  NULL );
+    ,  &Tarea3_Handler);
 
  
 }
@@ -65,16 +71,21 @@ void loop()
 void Tarea1( void *pvParameters __attribute__((unused)) )  // This is a Task.
 {
 
-int contador = 0;
-  
 
-
- 
 
   for (;;) 
   {
     
   contador++;
+
+
+  if(contador == 10){
+    vTaskSuspend(Tarea2_Handler);
+    }else if(contador == 20){
+    vTaskResume(Tarea2_Handler);
+    }
+
+
     
     if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
     {
@@ -115,8 +126,10 @@ void Tarea3( void *pvParameters __attribute__((unused)) )
 {
 
 
-  pinMode(13,OUTPUT);
+  
 
+  pinMode(13,OUTPUT);
+ 
   int state = LOW;
   for (;;)
   {
@@ -128,8 +141,13 @@ void Tarea3( void *pvParameters __attribute__((unused)) )
         }
         
     digitalWrite(13,state);
-  
 
-   vTaskDelay(2000/portTICK_PERIOD_MS);  
+
+   vTaskDelay(2000/portTICK_PERIOD_MS);
+
+   if(contador >= 30){
+      vTaskDelete(NULL);
+      }
+    
   }
 }
