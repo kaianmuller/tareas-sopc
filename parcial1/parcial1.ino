@@ -107,7 +107,7 @@ void Tarea2( void *pvParameters __attribute__((unused)) )
       xSemaphoreGive( xSerialSemaphore ); 
     }
 
- vTaskDelay(1000/portTICK_PERIOD_MS); 
+ vTaskDelay(3000/portTICK_PERIOD_MS); 
   }
 }
 
