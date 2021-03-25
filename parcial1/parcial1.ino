@@ -114,20 +114,22 @@ void Tarea2( void *pvParameters __attribute__((unused)) )
 void Tarea3( void *pvParameters __attribute__((unused)) )  
 {
 
+
+  pinMode(13,OUTPUT);
+
+  int state = LOW;
   for (;;)
   {
 
-    int sensorValue = analogRead(A0);
+    if(state == LOW){
+      state = HIGH;
+      }else{
+        state = LOW;
+        }
+        
+    digitalWrite(13,state);
+  
 
-
-    if ( xSemaphoreTake( xSerialSemaphore, ( TickType_t ) 5 ) == pdTRUE )
-    {
-
-      Serial.println(sensorValue);
-
-      xSemaphoreGive( xSerialSemaphore ); 
-    }
-
-    vTaskDelay(1);  
+   vTaskDelay(2000/portTICK_PERIOD_MS);  
   }
 }
