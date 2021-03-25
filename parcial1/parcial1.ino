@@ -32,7 +32,7 @@ void setup() {
     ,  "Tarea1" 
     ,  128  
     ,  NULL
-    ,  1  
+    ,  3  
     ,  NULL );
 
   xTaskCreate(
@@ -40,7 +40,7 @@ void setup() {
     ,  "Tarea2"
     ,  128  
     ,  NULL
-    ,  1  
+    ,  2  
     ,  NULL );
 
   xTaskCreate(
